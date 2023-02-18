@@ -7,6 +7,7 @@
     android:background="@color/black"
     tools:context=".MainActivity">
 
+    <!-- text field for asking question-->
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -15,7 +16,7 @@
         android:layout_marginStart="5dp"
         android:layout_marginTop="5dp"
         android:layout_marginEnd="5dp"
-        android:layout_marginBottom="5dp"
+        android:layout_marginBottom="10dp"
         android:padding="5dp">
 
         <LinearLayout
@@ -23,32 +24,35 @@
             android:layout_height="match_parent"
             android:orientation="vertical">
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            >
-            <Button
-                android:id="@+id/restartConvoButton"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:text="Refresh Session"
-                android:layout_weight="0.3"
-                android:layout_marginRight="10dp"></Button>
-            <Button
-                android:id="@+id/shareRecipeButton"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:text="Share Recipe"
-                android:layout_weight="0.3"
-                android:layout_marginRight="10dp"></Button>
-            <Button
-                android:id="@+id/saveRecipeButton"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:text="Save Recipe"
-                android:layout_weight="0.3"></Button>
-        </LinearLayout>
+                android:layout_weight="1">
+
+                <Button
+                    android:id="@+id/restartConvoButton"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginRight="10dp"
+                    android:layout_weight="0.3"
+                    android:text="Refresh Session"></Button>
+
+
+                <Button
+                    android:id="@+id/saveRecipeButton"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginRight="10dp"
+                    android:layout_weight="0.3"
+                    android:text="Save Recipe"></Button>
+
+                <Button
+                    android:id="@+id/viewSavedRecipesButton"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="0.3"
+                    android:text="View Saved Recipes"></Button>
+            </LinearLayout>
 
             <!-- text view for displaying question-->
             <TextView
@@ -74,7 +78,7 @@
         </LinearLayout>
 
     </ScrollView>
-    <!-- text field for asking question-->
+
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/idTILQuery"
         style="@style/Widget.Design.TextInputLayout"

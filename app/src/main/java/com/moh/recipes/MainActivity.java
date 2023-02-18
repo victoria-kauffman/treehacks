@@ -1,7 +1,12 @@
 package com.moh.recipes;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.room.RoomDatabase;
 
+import android.content.AsyncQueryHandler;
+import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -32,10 +37,13 @@ public class MainActivity extends AppCompatActivity {
     TextView responseTv,  questionTv;
     TextInputEditText queryTiet;
 
-    Button saveButton, shareButton, restartButton;
+    Button saveButton, viewSavedButton, restartButton;
 
     String url = "https://api.openai.com/v1/completions";
     String fullQuery;
+    String recipeText;
+
+    RecipeViewModel recipeViewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,7 +56,7 @@ public class MainActivity extends AppCompatActivity {
 
         saveButton = findViewById(R.id.saveRecipeButton);
         restartButton = findViewById(R.id.restartConvoButton);
-        shareButton = findViewById(R.id.shareRecipeButton);
+        viewSavedButton = findViewById(R.id.viewSavedRecipesButton);
 
         restart();
 
@@ -68,14 +76,25 @@ public class MainActivity extends AppCompatActivity {
         saveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                // Want to save the recipe to the Room Database
 
+                // RecipeDatabase db = RecipeDatabase.getDbInstance(getApplicationContext());
+
+                int endOfIndex = recipeText.indexOf('\n');
+
+              //  db.recipeDao().insert();
+                recipeViewModel = new ViewModelProvider(MainActivity.this).get(RecipeViewModel.class);
+
+                recipeViewModel.insert(new Recipe(recipeText.substring(0, endOfIndex),
+                                       recipeText.substring(endOfIndex + 1)));
+                Toast.makeText(MainActivity.this, "Recipe Saved.", Toast.LENGTH_SHORT).show();
             }
         });
 
-        shareButton.setOnClickListener(new View.OnClickListener() {
+        viewSavedButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                startActivity(new Intent(getApplicationContext(), SavedRecipes.class));
             }
         });
 
@@ -97,7 +116,7 @@ public class MainActivity extends AppCompatActivity {
             jsonObject.put("model", "text-davinci-003");
             jsonObject.put("prompt", fullQuery);
             jsonObject.put("temperature", 0);
-            jsonObject.put("max_tokens", 100);
+            jsonObject.put("max_tokens", 1024);
             jsonObject.put("top_p", 1);
             jsonObject.put("frequency_penalty", 0.0);
             jsonObject.put("presence_penalty", 0.0);
@@ -107,8 +126,6 @@ public class MainActivity extends AppCompatActivity {
             hideRecipeButtons();
             Log.e("Create JSON", "Unexpected JSON exception");
         }
-
-
     }
 
     private void makeRequest(JSONObject jsonObject) {
@@ -119,10 +136,11 @@ public class MainActivity extends AppCompatActivity {
                     @Override
                     public void onResponse(JSONObject response) {
                         try {
-                            shareButton.setVisibility(View.VISIBLE);
+                            viewSavedButton.setVisibility(View.VISIBLE);
                             saveButton.setVisibility(View.VISIBLE);
 
-                            responseTv.setText(response.getJSONArray("choices").getJSONObject(0).getString("text"));
+                            recipeText = response.getJSONArray("choices").getJSONObject(0).getString("text");
+                            responseTv.setText(recipeText);
                         } catch (JSONException e) {
                             Log.e("Parse JSON", "Unexpected JSON exception");
                             hideRecipeButtons();
@@ -152,7 +170,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void restart() {
-        fullQuery = "Give me one recipe I could make, given the following: ";
+        fullQuery = "Give me one recipe I could make, given the following. Make sure the name of the dish is alone on the first line and the ingredients and directions are beneath. ";
         questionTv.setText("Start a conversation about what you want to make, what ingredients you have, etc. I'll recommend recipes accordingly.");
         responseTv.setText("");
         queryTiet.setText("");
@@ -163,6 +181,6 @@ public class MainActivity extends AppCompatActivity {
 
     private void hideRecipeButtons() {
         saveButton.setVisibility(View.INVISIBLE);
-        shareButton.setVisibility(View.INVISIBLE);
+        viewSavedButton.setVisibility(View.INVISIBLE);
     }
 }

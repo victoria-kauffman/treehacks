@@ -12,7 +12,6 @@ import android.widget.TextView.OnEditorActionListener
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.ViewModelProvider
 import com.android.volley.DefaultRetryPolicy
 import com.android.volley.Response
 import com.android.volley.toolbox.JsonObjectRequest
@@ -59,9 +58,9 @@ class MainActivity : AppCompatActivity() {
         })
         saveButton!!.setOnClickListener(View.OnClickListener { // Want to save the recipe to the Room Database
 
-            val endOfIndex = recipeText.indexOf('\n')
+            val endOfIndex : Int = recipeText.substring(3).indexOf("\n") + 3
 
-            recipeViewModel.insert( Recipe(recipeText.substring(0, endOfIndex),
+            recipeViewModel.insert( Recipe(recipeText.substring(0, endOfIndex).trim().replace("\n", ""),
                                            recipeText.substring(endOfIndex + 1)))
             Toast.makeText(this@MainActivity, "Recipe Saved.", Toast.LENGTH_SHORT).show()
         })
@@ -84,7 +83,7 @@ class MainActivity : AppCompatActivity() {
             jsonObject.put("presence_penalty", 0.0)
             makeRequest(jsonObject)
         } catch (e: JSONException) {
-            hideRecipeButtons()
+            saveButton!!.visibility = View.INVISIBLE
             Log.e("Create JSON", "Unexpected JSON exception")
         }
     }
@@ -94,13 +93,12 @@ class MainActivity : AppCompatActivity() {
         val jsonObjectRequest: JsonObjectRequest = object : JsonObjectRequest(Method.POST, url, jsonObject,
                 Response.Listener { response ->
                     try {
-                        viewSavedButton!!.visibility = View.VISIBLE
                         saveButton!!.visibility = View.VISIBLE
                         recipeText = response.getJSONArray("choices").getJSONObject(0).getString("text")
                         responseTv!!.text = recipeText
                     } catch (e: JSONException) {
                         Log.e("Parse JSON", "Unexpected JSON exception")
-                        hideRecipeButtons()
+                        saveButton!!.visibility = View.INVISIBLE
                     }
                 }, Response.ErrorListener { error ->
             Log.e("GTP Request", """
@@ -109,7 +107,7 @@ class MainActivity : AppCompatActivity() {
      """.trimIndent())
             questionTv!!.text = ""
             responseTv!!.text = "An error has occurred."
-            hideRecipeButtons()
+            saveButton!!.visibility = View.INVISIBLE
         }) {
             override fun getHeaders(): Map<String, String> {
                 val params: MutableMap<String, String> = HashMap()
@@ -128,11 +126,6 @@ class MainActivity : AppCompatActivity() {
         responseTv!!.text = ""
         queryTiet!!.setText("")
         restartButton!!.visibility = View.INVISIBLE
-        hideRecipeButtons()
-    }
-
-    private fun hideRecipeButtons() {
         saveButton!!.visibility = View.INVISIBLE
-        viewSavedButton!!.visibility = View.INVISIBLE
     }
 }

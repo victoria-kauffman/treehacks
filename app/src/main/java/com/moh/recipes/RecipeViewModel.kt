@@ -1,11 +1,6 @@
 package com.moh.recipes
 
-import android.app.Application
 import androidx.lifecycle.*
-import androidx.room.Delete
-import androidx.room.Insert
-import androidx.room.Query
-import androidx.room.Update
 import kotlinx.coroutines.launch
 
 class RecipeViewModel(private val repository: RecipeRepository) : ViewModel() {
@@ -35,7 +30,7 @@ class RecipeViewModel(private val repository: RecipeRepository) : ViewModel() {
     }
 }
 
-class WordViewModelFactory(private val repository: RecipeRepository) : ViewModelProvider.Factory {
+class RecipeViewModelFactory(private val repository: RecipeRepository) : ViewModelProvider.Factory {
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
         if (modelClass.isAssignableFrom(RecipeViewModel::class.java)) {
             @Suppress("UNCHECKED_CAST")

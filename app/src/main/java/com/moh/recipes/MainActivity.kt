@@ -10,6 +10,7 @@ import android.widget.Button
 import android.widget.TextView
 import android.widget.TextView.OnEditorActionListener
 import android.widget.Toast
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import com.android.volley.DefaultRetryPolicy
@@ -30,7 +31,10 @@ class MainActivity : AppCompatActivity() {
     var url = "https://api.openai.com/v1/completions"
     var fullQuery: String = ""
     var recipeText: String = ""
-    var recipeViewModel: RecipeViewModel? = null
+
+    private val recipeViewModel: RecipeViewModel by viewModels {
+        RecipeViewModelFactory((application as RecipeApplication).repository)
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -57,9 +61,8 @@ class MainActivity : AppCompatActivity() {
 
             val endOfIndex = recipeText.indexOf('\n')
 
-            recipeViewModel = ViewModelProvider(this@MainActivity).get(RecipeViewModel::class.java)
-            recipeViewModel!!.insert( Recipe(recipeText.substring(0, endOfIndex),
-                                            recipeText.substring(endOfIndex + 1)))
+            recipeViewModel.insert( Recipe(recipeText.substring(0, endOfIndex),
+                                           recipeText.substring(endOfIndex + 1)))
             Toast.makeText(this@MainActivity, "Recipe Saved.", Toast.LENGTH_SHORT).show()
         })
         viewSavedButton!!.setOnClickListener(View.OnClickListener { startActivity(Intent(applicationContext, SavedRecipes::class.java)) })

@@ -1,32 +1,23 @@
 package com.moh.recipes
 
+import android.util.Log
 import androidx.lifecycle.*
 import kotlinx.coroutines.launch
 
 class RecipeViewModel(private val repository: RecipeRepository) : ViewModel() {
 
     val allRecipes : LiveData<List<Recipe>> = repository.allRecipes.asLiveData()
-    val recipeNames : LiveData<List<String>> = repository.recipeNames.asLiveData()
-
-    fun getRecipe(rid : Int) : Recipe? {
-        val recipes : List<Recipe>? = repository.getRecipe(rid).value;
-
-        if (recipes != null && !recipes.isEmpty()) {
-            return recipes!![0]
-        }
-        return null
-    }
 
     fun insert(recipe: Recipe) = viewModelScope.launch {
         repository.insert(recipe)
     }
 
-    fun delete(recipe: Recipe) = viewModelScope.launch {
-        repository.delete(recipe)
+    fun delete(rid: Int) = viewModelScope.launch {
+        repository.delete(rid)
     }
 
-    fun update(recipe: Recipe) = viewModelScope.launch {
-        repository.update(recipe)
+    fun update(recipe_name : String, recipe : String, rid : Int) = viewModelScope.launch {
+        repository.update(recipe_name, recipe, rid)
     }
 }
 

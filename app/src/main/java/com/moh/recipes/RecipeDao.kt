@@ -9,17 +9,11 @@ interface RecipeDao {
     @Query("SELECT * FROM recipes")
     fun getAllRecipes(): Flow<List<Recipe>>
 
-    @Query("SELECT recipe_name FROM recipes")
-    fun listRecipes(): Flow<List<String>>
+    @Query("UPDATE recipes  SET recipe_name = :recipe_name, recipe = :recipe WHERE rid = :rid")
+    suspend fun update(recipe_name : String, recipe : String, rid : Int)
 
-    @Query("SELECT * FROM recipes WHERE rid = :rid")
-    fun getRecipe(rid: Int): LiveData<List<Recipe>>
-
-    @Update
-    suspend fun update(recipe: Recipe)
-
-    @Delete
-    suspend fun delete(recipe: Recipe)
+    @Query("DELETE FROM recipes WHERE rid = :rid")
+    suspend fun delete(rid : Int)
 
     @Insert
     suspend fun insert(recipe: Recipe)

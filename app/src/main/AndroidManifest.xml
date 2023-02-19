@@ -15,6 +15,9 @@
         android:theme="@style/Theme.Recipes"
         tools:targetApi="33">
         <activity
+            android:name=".RecipeView"
+            android:exported="false" />
+        <activity
             android:name=".SavedRecipes"
             android:exported="false" />
         <activity

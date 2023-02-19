@@ -7,12 +7,6 @@ import kotlinx.coroutines.flow.Flow
 class RecipeRepository(private val recipeDao: RecipeDao) {
 
     val allRecipes: Flow<List<Recipe>> = recipeDao.getAllRecipes()
-    val recipeNames : Flow<List<String>> = recipeDao.listRecipes()
-
-    @WorkerThread
-    fun getRecipe(rid : Int) : LiveData<List<Recipe>> {
-        return recipeDao.getRecipe(rid)
-    }
 
     @Suppress("RedundantSuspendModifier")
     @WorkerThread
@@ -22,14 +16,14 @@ class RecipeRepository(private val recipeDao: RecipeDao) {
 
     @Suppress("RedundantSuspendModifier")
     @WorkerThread
-    suspend fun update(recipe: Recipe) {
-        recipeDao.update(recipe)
+    suspend fun update(recipe_name : String, recipe : String, rid : Int) {
+        recipeDao.update(recipe_name, recipe, rid)
     }
 
     @Suppress("RedundantSuspendModifier")
     @WorkerThread
-    suspend fun delete(recipe: Recipe) {
-        recipeDao.delete(recipe)
+    suspend fun delete(rid: Int) {
+        recipeDao.delete(rid)
     }
 }
 

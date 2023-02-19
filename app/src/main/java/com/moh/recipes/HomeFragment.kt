@@ -128,7 +128,7 @@ class HomeFragment : Fragment() {
             override fun getHeaders(): Map<String, String> {
                 val params: MutableMap<String, String> = HashMap()
                 params["Content-Type"] = "application/json"
-                params["Authorization"] = "Bearer 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"
+                params["Authorization"] = "Bearer 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"
                 return params
             }
         }

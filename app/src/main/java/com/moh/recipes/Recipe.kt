@@ -3,10 +3,11 @@ package com.moh.recipes
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 
-@Entity()
+@Entity(tableName = "recipes")
 data class Recipe (
+    var recipe_name: String,
+    var recipe: String
+) {
     @PrimaryKey(autoGenerate = true)
-    val rid: Int,
-    val recipe_name: String?,
-    val recipe: String?
-)
+    var rid: Int = 0
+}

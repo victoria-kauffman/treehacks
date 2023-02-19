@@ -64,7 +64,7 @@
                 android:padding="4dp"
                 android:text=""
                 android:textColor="@color/white"
-                android:textSize="26dp" />
+                android:textSize="35dp" />
 
             <!-- text view for displaying response-->
             <EditText
@@ -75,7 +75,7 @@
                 android:padding="4dp"
                 android:text=""
                 android:textColor="@color/white"
-                android:textSize="23dp" />
+                android:textSize="33dp" />
         </LinearLayout>
 
     </ScrollView>

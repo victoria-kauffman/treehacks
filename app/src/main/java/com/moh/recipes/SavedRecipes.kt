@@ -32,6 +32,7 @@ internal class SavedRecipes : AppCompatActivity() {
                     val recButton = Button(this)
                     recButton.text = rec.recipe_name
                     recipe_list.addView(recButton)
+                    recButton.textSize = 30F
 
                     recButton.setOnClickListener(View.OnClickListener {
                         val i: Intent = Intent(applicationContext, RecipeView::class.java)

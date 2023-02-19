@@ -1,18 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/black"
-    tools:context=".MainActivity">
+    android:id="@+id/container">
 
     <!-- text field for asking question-->
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_above="@id/idTILQuery"
         android:layout_alignParentTop="true"
         android:layout_marginStart="5dp"
         android:layout_marginTop="5dp"
@@ -24,6 +23,28 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical">
+
+            <EditText
+                android:id="@+id/recipe_name"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="5dp"
+                android:padding="4dp"
+                android:text=""
+                android:textColor="@color/white"
+                android:textSize="35dp" />
+
+            <!-- text view for displaying response-->
+            <EditText
+                android:id="@+id/recipe_contents"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="10dp"
+                android:padding="4dp"
+                android:text=""
+                android:textColor="@color/white"
+                android:textSize="33dp" />
+
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -55,28 +76,18 @@
                     android:layout_weight="0.3"
                     android:text="Update Recipe"></Button>
             </LinearLayout>
-
-            <EditText
-                android:id="@+id/recipe_name"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginTop="5dp"
-                android:padding="4dp"
-                android:text=""
-                android:textColor="@color/white"
-                android:textSize="35dp" />
-
-            <!-- text view for displaying response-->
-            <EditText
-                android:id="@+id/recipe_contents"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginTop="10dp"
-                android:padding="4dp"
-                android:text=""
-                android:textColor="@color/white"
-                android:textSize="33dp" />
         </LinearLayout>
 
     </ScrollView>
-</RelativeLayout>
+    <com.google.android.material.bottomnavigation.BottomNavigationView
+        android:id="@+id/bottomNavigationView"
+        android:layout_width="409dp"
+        android:layout_height="62dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.996"
+        app:menu="@menu/bottom_nav_menu" />
+</androidx.constraintlayout.widget.ConstraintLayout>
